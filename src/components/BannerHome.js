@@ -1,5 +1,5 @@
 import { current } from '@reduxjs/toolkit';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
@@ -24,7 +24,16 @@ const BannerHome = () => {
       setCurrentImage((pre) => pre - 1);
     }
   };
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (currentImage >= 0 && currentImage < bannerData.length - 1) {
+        handleNext();
+      } else {
+        setCurrentImage(0);
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [bannerData, currentImage]);
   return (
     <section className='w-full h-full'>
       <div className='flex'>
@@ -37,7 +46,7 @@ const BannerHome = () => {
             >
               <div className='w-full h-full'>
                 <img
-                  src={imageURL + item.backdrop_path}
+                  src={imageURL + item?.backdrop_path}
                   alt='poster'
                   className='h-full w-full object-cover'
                 />
@@ -62,7 +71,7 @@ const BannerHome = () => {
               <div className='container mx-auto'>
                 <div className='max-w-md w-full absolute bottom-[140px] px-3 ml-6'>
                   <h2 className='font-bold text-2xl lg:text-4xl text-white drop-shadow-2xl'>
-                    {item.title}
+                    {item?.title || item?.name}
                   </h2>
                   <p className='break-words text-ellipsis line-clamp-5 my-2'>{item.overview}</p>
                   <div className='flex items-center gap-8 relative '>
@@ -71,7 +80,7 @@ const BannerHome = () => {
                       <PiStarThin className='absolute top-1 left-[84px] text-yellow-300' />
                     </p>
                     <span>|</span>
-                    <p>View: {Number(item.popularity)}</p>
+                    <p>View: {Number(item?.popularity)}</p>
                   </div>
                   <button className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'>
                     Play Now
