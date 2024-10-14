@@ -4,7 +4,9 @@ import BannerHome from '../components/BannerHome';
 const Home = () => {
   return (
     <div>
-      <BannerHome />
+      <div>
+        <BannerHome />
+      </div>
     </div>
   );
 };

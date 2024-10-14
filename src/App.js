@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBannerData } from './store/movieoSlice';
+import { setBannerData, setImageURL } from './store/movieoSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,15 +19,23 @@ function App() {
       console.log('err fetchTrendingData', error);
     }
   };
-
+  const fetchConfiguration = async () => {
+    try {
+      const response = await axios.get('/configuration');
+      dispatch(setImageURL(response.data.images.secure_base_url + 'original'));
+    } catch (error) {
+      console.log('err fetchConfiguration', error);
+    }
+  };
   useEffect(() => {
     fetchTrendingData();
+    fetchConfiguration();
   }, []);
 
   return (
     <main>
       <Header />
-      <div className='pt-20'>
+      <div className=''>
         <Outlet />
       </div>
       <Footer />

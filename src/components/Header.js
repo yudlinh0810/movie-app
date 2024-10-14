@@ -22,7 +22,7 @@ const Header = () => {
     e.preventDefault();
   };
   return (
-    <header className='fixed w-full h-22 pt-1 bg-neutral-700 bg-opacity-70'>
+    <header className='fixed w-full h-22 pt-1 bg-neutral-700 bg-opacity-70 z-40'>
       <div className='flex top-0 h-14 w-full'>
         <div className='grow h-14 w-24 flex items-center ml-8'>
           <Time />
