@@ -10,7 +10,11 @@ const Time = () => {
     return () => clearInterval(timer);
   }, []);
 
-  return <p className='hover:text-neutral-100'>{time.toLocaleTimeString().split(' ')[0]}</p>;
+  return (
+    <p className='cursor-context-menu hover:text-neutral-100'>
+      {time.toLocaleTimeString().split(' ')[0]}
+    </p>
+  );
 };
 
 export default Time;

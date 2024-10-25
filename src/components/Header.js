@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import logo from '../assets/logo.png';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Time from './Time';
 import { IoMdArrowDropdown } from 'react-icons/io';
@@ -7,28 +6,25 @@ import { CiHeart, CiSearch } from 'react-icons/ci';
 import { navigation } from '../contants/navigation';
 
 const Header = () => {
-  const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
-  console.log('first');
-
-  useEffect(() => {
-    if (searchInput) {
-      navigate(`/search?q=${searchInput}`);
-    }
-  }, []);
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSubmitSearch = (e) => {
-    navigate(`/search?q=${searchInput}`);
+    if (searchInput) {
+      let trans = searchInput.split('%20').join(' ').trim();
+      console.log(trans);
+      navigate(`/search?q=${trans}`, { state: trans });
+    }
     e.preventDefault();
   };
   return (
-    <header className='fixed w-full h-22 pt-1 bg-neutral-700 bg-opacity-70 z-40'>
+    <header className='fixed w-full h-22 pt-1 bg-black bg-opacity-50 z-40'>
       <div className='flex top-0 h-14 w-full'>
         <div className='grow h-14 w-24 flex items-center ml-8'>
           <Time />
         </div>
         <Link to={'/'} className='grow-0 h-14 flex items-center'>
-          <img src={logo} alt='logo' width={100} className='hover:scale-125 cursor-pointer' />
+          <h1 className='text-2xl text-white hover:scale-125 cursor-pointer'>YudLinhTV</h1>
         </Link>
         <div className='grow h-14 w-24 flex items-center ml-8 relative left-28'>
           <form className='flex' onSubmit={handleSubmitSearch}>
