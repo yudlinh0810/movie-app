@@ -1,16 +1,16 @@
-import { current } from '@reduxjs/toolkit';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
 
 const BannerHome = () => {
-  const bannerData = useSelector((state) => state.movieoData.bannerData);
+  const banners = useSelector((state) => state.movieoData.bannerData);
   const imageURL = useSelector((state) => state.movieoData.imageURL);
   const [currentImage, setCurrentImage] = useState(0);
 
   const handleNext = () => {
-    if (currentImage >= 0 && currentImage < bannerData.length - 1) {
+    if (currentImage >= 0 && currentImage < banners.length - 1) {
       setCurrentImage((pre) => pre + 1);
     } else {
       setCurrentImage(0);
@@ -19,28 +19,44 @@ const BannerHome = () => {
 
   const handlePrevious = () => {
     if (currentImage === 0) {
-      setCurrentImage(bannerData.length - 1);
+      setCurrentImage(banners.length - 1);
     } else {
       setCurrentImage((pre) => pre - 1);
     }
   };
   useEffect(() => {
     const interval = setInterval(() => {
-      if (currentImage >= 0 && currentImage < bannerData.length - 1) {
+      if (currentImage >= 0 && currentImage < banners.length - 1) {
         handleNext();
       } else {
         setCurrentImage(0);
       }
     }, 4000);
     return () => clearInterval(interval);
-  }, [bannerData, currentImage]);
+  }, [banners, currentImage]);
+
+  const handlePlay = async (movie) => {
+    try {
+      const videos = await axios.get(`/movie/${movie.id}/videos`);
+      if (videos.status === '200 OK') {
+        const fetchYoutube = await axios.get(
+          `https://gdata.youtube.com/feeds/api/watch?=${videos}`
+        );
+        console.log(fetchYoutube);
+      } else {
+        console.log('err', videos);
+      }
+    } catch (error) {
+      console.log('err fetchTrendingData', error);
+    }
+  };
   return (
     <section className='w-full h-full'>
-      <div className='flex'>
-        {bannerData.map((item, index) => {
+      <div className='flex overflow-hidden'>
+        {banners.map((item, index) => {
           return (
             <div
-              key={index}
+              key={item.id + 'bannerHome' + index}
               className='min-w-full lg:min-h-full overflow-hidden relative '
               style={{ transform: `translateX(-${currentImage * 100}%)` }}
             >
@@ -68,7 +84,7 @@ const BannerHome = () => {
               </div>
               {/* >> */}
               <div className='absolute top-0 w-full h-full bg-gradient-to-t from-neutral-900 to-transparent'></div>
-              <div className='container mx-auto'>
+              <div className='container mx-auto cursor-context-menu'>
                 <div className='max-w-md w-full absolute bottom-[140px] px-3 ml-6'>
                   <h2 className='font-bold text-2xl lg:text-4xl text-white drop-shadow-2xl'>
                     {item?.title || item?.name}
@@ -82,7 +98,10 @@ const BannerHome = () => {
                     <span>|</span>
                     <p>View: {Number(item?.popularity)}</p>
                   </div>
-                  <button className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'>
+                  <button
+                    onClick={() => handlePlay(item)}
+                    className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'
+                  >
                     Play Now
                   </button>
                 </div>

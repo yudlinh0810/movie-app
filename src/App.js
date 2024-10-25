@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBannerData, setImageURL } from './store/movieoSlice';
+import { setBannerData, setImageURL, setTrendingData } from './store/movieoSlice';
 
 function App() {
   const dispatch = useDispatch();
