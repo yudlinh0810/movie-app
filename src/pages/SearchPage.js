@@ -14,7 +14,7 @@ const SearchPage = () => {
     try {
       const response = await axios.get(`/search/multi`, {
         params: {
-          query: location.state,
+          query: location.search.slice(3),
           page: 1,
         },
       });

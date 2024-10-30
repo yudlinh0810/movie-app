@@ -22,7 +22,7 @@ const HorizontalScrollCard = ({ data = [], heading, trending, media_type }) => {
   };
   return (
     <div className='container w-[1295px] mx-auto px-3 my-10'>
-      <h2 className='text-2xl font-bold mb-4'>{heading}</h2>
+      <h2 className='text-2xl font-bold mb-4 capitalize'>{heading}</h2>
       <div className='relative'>
         <div
           ref={containerRef}

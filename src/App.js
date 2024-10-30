@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setBannerData, setImageURL, setTrendingData } from './store/movieoSlice';
+import { setBannerData, setImageURL } from './store/movieoSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ function App() {
   }, []);
 
   return (
-    <main>
+    <main className='grid min-h-[100dvh]'>
       <Header />
       <div className=''>
         <Outlet />

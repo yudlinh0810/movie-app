@@ -5,7 +5,7 @@ import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-const Card = ({ data, trending, media_type, index }) => {
+const Card = ({ data, trending = '', media_type = '', index }) => {
   const imageURL = useSelector((state) => state.movieoData.imageURL);
   const mediaType = data.media_type ?? media_type;
   return (

@@ -33,7 +33,7 @@ const BannerHome = () => {
       }
     }, 4000);
     return () => clearInterval(interval);
-  }, [banners, currentImage]);
+  }, [banners, imageURL, currentImage]);
 
   const handlePlay = async (movie) => {
     try {
