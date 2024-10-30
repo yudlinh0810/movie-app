@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const BannerHome = () => {
   const banners = useSelector((state) => state.movieoData.bannerData);
@@ -35,21 +36,6 @@ const BannerHome = () => {
     return () => clearInterval(interval);
   }, [banners, imageURL, currentImage]);
 
-  const handlePlay = async (movie) => {
-    try {
-      const videos = await axios.get(`/movie/${movie.id}/videos`);
-      if (videos.status === '200 OK') {
-        const fetchYoutube = await axios.get(
-          `https://gdata.youtube.com/feeds/api/watch?=${videos}`
-        );
-        console.log(fetchYoutube);
-      } else {
-        console.log('err', videos);
-      }
-    } catch (error) {
-      console.log('err fetchTrendingData', error);
-    }
-  };
   return (
     <section className='w-full h-full'>
       <div className='flex overflow-hidden'>
@@ -98,12 +84,11 @@ const BannerHome = () => {
                     <span>|</span>
                     <p>View: {Number(item?.popularity)}</p>
                   </div>
-                  <button
-                    onClick={() => handlePlay(item)}
-                    className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'
-                  >
-                    Play Now
-                  </button>
+                  <Link to={'/' + item?.media_type + '/' + item.id}>
+                    <button className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'>
+                      Play Now
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
