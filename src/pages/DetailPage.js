@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useFetchDetail from '../hooks/useFetchDetail';
 import useFetch from '../hooks/useFetch';
@@ -7,6 +7,7 @@ import { PiStarThin } from 'react-icons/pi';
 import moment from 'moment';
 import Divider from '../components/Divider';
 import HorizontalScrollCard from '../components/HorizontalScrollCard';
+import VideoPlay from '../components/VideoPlay';
 
 const DetailPage = () => {
   const param = useParams();
@@ -15,15 +16,19 @@ const DetailPage = () => {
   const { data: castData } = useFetchDetail(`/${param?.explore}/${param?.id}/credits`);
   const { data: similarData } = useFetch(`/${param?.explore}/${param?.id}/similar`);
   const { data: recommentdationData } = useFetch(`/${param?.explore}/${param?.id}/recommendations`);
-  console.log('data', data);
-  console.log('cast', castData);
-  console.log('similar', similarData);
+  const [isVisible, setIsVisible] = useState(false);
+  const [playVideoId, setPlayVideoId] = useState('');
+
   const duration = (data?.runtime / 60)?.toFixed(1)?.split('.');
   const Story = castData?.crew
     .filter((el) => el.job === 'Story')
     .map((el) => el?.name)
     .join(', ');
-  console.log('Story', Story);
+  const handlePlayVideo = () => {
+    setPlayVideoId(data);
+    setIsVisible(true);
+  };
+
   return (
     <div>
       <div className='w-full h-[280px] relative'>
@@ -39,6 +44,12 @@ const DetailPage = () => {
             alt=''
             className='h-80 w-60 object-cover rounded-xl'
           />
+          <button
+            onClick={() => handlePlayVideo(data)}
+            className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'
+          >
+            Play Now
+          </button>
         </div>
         <div className=''>
           <h2 className='text-4xl font-bold text-white/90'>{data?.title || data?.name}</h2>
@@ -83,7 +94,7 @@ const DetailPage = () => {
               ?.filter((cast) => cast?.profile_path !== null)
               ?.map((cast, index) => {
                 return (
-                  <div>
+                  <div key={index + param.explore + cast.id}>
                     <img
                       src={imageURL + cast?.profile_path}
                       alt={cast?.name}
@@ -108,6 +119,13 @@ const DetailPage = () => {
           media_type={param.explore}
         />
       </div>
+      {isVisible && (
+        <VideoPlay
+          data={playVideoId}
+          close={() => setIsVisible(false)}
+          media_type={param.explore}
+        />
+      )}
     </div>
   );
 };
