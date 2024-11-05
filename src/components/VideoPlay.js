@@ -2,7 +2,7 @@ import React from 'react';
 import { IoMdClose } from 'react-icons/io';
 import useFetchDetail from '../hooks/useFetchDetail';
 
-const VideoPlay = ({ data, videoId, close, media_type }) => {
+const VideoPlay = ({ data, close, media_type }) => {
   const { data: videoData } = useFetchDetail(`/${media_type}/${data?.id}/videos`);
   console.log('id', data?.id);
   console.log('trailer', videoData);

@@ -1,14 +1,19 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import useFetchDetail from '../hooks/useFetchDetail';
+import VideoPlay from './VideoPlay';
 
 const BannerHome = () => {
   const banners = useSelector((state) => state.movieoData.bannerData);
   const imageURL = useSelector((state) => state.movieoData.imageURL);
+  const [movieData, setDataMovie] = useState('');
   const [currentImage, setCurrentImage] = useState(0);
+  const { data } = useFetchDetail(`/${movieData?.media_type}/${movieData?.id}`);
+  const [isVisible, setIsVisible] = useState(false);
+  const [playVideoId, setPlayVideoId] = useState('');
 
   const handleNext = () => {
     if (currentImage >= 0 && currentImage < banners.length - 1) {
@@ -35,6 +40,12 @@ const BannerHome = () => {
     }, 4000);
     return () => clearInterval(interval);
   }, [banners, imageURL, currentImage]);
+
+  const handlePlayNow = (movie) => {
+    setDataMovie(movie);
+    setPlayVideoId(data);
+    setIsVisible(true);
+  };
 
   return (
     <section className='w-full h-full'>
@@ -84,17 +95,26 @@ const BannerHome = () => {
                     <span>|</span>
                     <p>View: {Number(item?.popularity)}</p>
                   </div>
-                  <Link to={'/' + item?.media_type + '/' + item.id}>
+                  <div onClick={() => handlePlayNow(item)}>
+                    {/* <Link to={'/' + item?.media_type + '/' + item.id}> */}
                     <button className='w-full font-bold bg-white text-black px-4 py-2 mt-4 rounded-xl hover:bg-gradient-to-l from-blue-700 to-blue-400 transition-all hover:scale-105 hover:text-white'>
                       Play Now
                     </button>
-                  </Link>
+                    {/* </Link> */}
+                  </div>
                 </div>
               </div>
             </div>
           );
         })}
       </div>
+      {isVisible && (
+        <VideoPlay
+          data={playVideoId}
+          close={() => setIsVisible(false)}
+          media_type={movieData.media_type}
+        />
+      )}
     </section>
   );
 };
