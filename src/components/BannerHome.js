@@ -42,7 +42,7 @@ const BannerHome = () => {
 
   const handlePlayNow = (movie) => {
     setDataMovie(movie);
-    setIsVisible(true);
+    setIsVisible(!isVisible);
   };
 
   useEffect(() => {
@@ -120,15 +120,17 @@ const BannerHome = () => {
         ))}
       </div>
       {isVisible && (
-        <VideoPlay
-          data={playVideoId}
-          close={() => {
-            setIsVisible(false);
-            setDataMovie('');
-            setPlayVideoId('');
-          }}
-          media_type={movieData.media_type}
-        />
+        <div onClick={() => setIsVisible(!isVisible)}>
+          <VideoPlay
+            data={playVideoId}
+            close={() => {
+              setIsVisible(false);
+              setDataMovie('');
+              setPlayVideoId('');
+            }}
+            media_type={movieData.media_type}
+          />
+        </div>
       )}
     </section>
   );

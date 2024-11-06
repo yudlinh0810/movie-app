@@ -32,7 +32,7 @@ const DetailPage = () => {
   return (
     <div>
       <div className='w-full h-[280px] relative'>
-        <div className='w-full h-full '>
+        <div className='w-full h-[280px] '>
           <img src={imageURL + data?.backdrop_path} alt='' className='w-full h-full object-cover' />
         </div>
         <div className='absolute w-full h-full top-0 bg-gradient-to-t from-neutral-900/80 to-transparent'></div>
@@ -120,11 +120,13 @@ const DetailPage = () => {
         />
       </div>
       {isVisible && (
-        <VideoPlay
-          data={playVideoId}
-          close={() => setIsVisible(false)}
-          media_type={param.explore}
-        />
+        <div onClick={() => setIsVisible(!isVisible)}>
+          <VideoPlay
+            data={playVideoId}
+            close={() => setIsVisible(false)}
+            media_type={param.explore}
+          />
+        </div>
       )}
     </div>
   );

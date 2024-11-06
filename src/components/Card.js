@@ -15,7 +15,7 @@ const Card = ({ data, trending = '', media_type = '', index }) => {
     >
       {data.backdrop_path !== null ? (
         <img
-          className='w-full h-full object-cover'
+          className='w-[240px] h-[320px] object-cover'
           src={imageURL + data.backdrop_path}
           alt={data.title || data.name}
         />
