@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { PiStarThin } from 'react-icons/pi';
 import { useSelector } from 'react-redux';
@@ -136,4 +136,4 @@ const BannerHome = () => {
   );
 };
 
-export default BannerHome;
+export default memo(BannerHome);
